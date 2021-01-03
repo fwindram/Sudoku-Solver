@@ -67,7 +67,9 @@ def swordfish(board,cands,square_pos):
                         use = cands[cols].dropna()
                         for rows in use.index:
                             if rem in use[rows] and not rows in [comb[0][0],comb[1][0],comb[2][0]]:
-                                cands.set_value(rows,cols,np.delete(cands.iloc[rows,cols],np.where(cands.iloc[rows,cols]==rem)))
+                                # cands.set_value(rows,cols,np.delete(cands.iloc[rows,cols],np.where(cands.iloc[rows,cols]==rem)))# set_value is deprecated as of pd 0.21.0
+                                # Use df.at[] instead
+                                cands.at[rows, cols] = np.delete(cands.iloc[rows,cols],np.where(cands.iloc[rows,cols]==rem))
                                 ischanged = 1
                                 print(f"R{rows}C{cols}     Swordfish, {rem} removed from {rowcol}")
                     if ischanged:

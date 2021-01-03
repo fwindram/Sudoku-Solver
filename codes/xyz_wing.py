@@ -3,6 +3,9 @@
 Created on Fri Jan 10 10:18:16 2020
 
 @author: omer.eker
+
+FW: Something seems bust here. Can't get it to solve correctly for some reason
+
 """
 import numpy as np
 import pandas as pd

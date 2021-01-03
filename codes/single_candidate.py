@@ -30,5 +30,5 @@ def single_cand(board,cands,square_pos):
                     board.iloc[row,col] = cand
                     cands = candidates_update(cands,row,col,cand,square_pos)
     if ischanged:
-        solver.solver(board,cands,square_pos)                 
+        solver.solver(board,cands,square_pos)
     

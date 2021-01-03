@@ -125,7 +125,7 @@ def naked_remove(rowcolbox,group_no,naked_inxs,comb,cands,square_pos,no_of_naked
             # cands.iloc[row,col] = np.array(list(set(cands.iloc[row,col]).difference(set(comb))))
             # cands.loc[row][col] = np.array(list(set(cands.iloc[row,col]).difference(set(comb))))
             # cands.set_value(row,col,np.array(list(set(cands.iloc[row,col]).difference(set(comb)))))    # set_value is deprecated as of pd 0.21.0
-            # Use df.at() instead
+            # Use df.at[] instead
             cands.at[row, col] = np.array(list(set(cands.iloc[row, col]).difference(set(comb))))
             print(f"R{row:<1}C{col:<1}     Naked {pairtriplequad[no_of_nakeds]:>7}s ({rowcolbox:<3}), {str(removed_vals):<15} removed, {pairtriplequad[no_of_nakeds]:>7}s: {str(comb):>6}")
             ischanged = 1
