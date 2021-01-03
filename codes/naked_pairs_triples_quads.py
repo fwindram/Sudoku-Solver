@@ -15,8 +15,8 @@ import itertools
 #%% NAKED PAIRS-TRIPLES
 #find naked pairs-triples-quads in the candidates dataframe
 def naked_pairs_triples(board,cands,square_pos):
-    ischanged = 0
-    
+    ischanged = False
+
     #go through combinations (2,3 and 4 elements at a time)
     for pair_triple_quad in [2,3]:
         #check for rows, columns and box consecutively
@@ -51,15 +51,17 @@ def naked_pairs_triples(board,cands,square_pos):
                         if len(naked_inxs):
                             # #removes pairs, triples values from the other cells for a group (row col or box)
                             cands,ischanged = naked_remove(rowcolbox,group_no,naked_inxs,naked_values,cands,square_pos,pair_triple_quad)
-
                         if ischanged:
-                            solver.solver(board,cands,square_pos)    
+                            return board, cands, square_pos, ischanged
+
+    return board, cands, square_pos, ischanged
+
                             
                             
 #%% NAKED QUADS
 #find naked quads in the candidates dataframe
 def naked_quads(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     
     #go through combinations (4 elements at a time)
     pair_triple_quad = 4
@@ -97,13 +99,14 @@ def naked_quads(board,cands,square_pos):
                         cands,ischanged = naked_remove(rowcolbox,group_no,naked_inxs,naked_values,cands,square_pos,pair_triple_quad)
 
                     if ischanged:
-                        solver.solver(board,cands,square_pos)    
+                        return board, cands, square_pos, ischanged
+    return board, cands, square_pos, ischanged
 
 #removes pairs, triples or quads values from the other cells for a group (row col or box)
 #it is different than "hidden_remove" function 
 def naked_remove(rowcolbox,group_no,naked_inxs,comb,cands,square_pos,no_of_nakeds):
     pairtriplequad = {2:"Pair",3:"Triple",4:"Quad"}
-    ischanged = 0
+    ischanged = False
     for cells in naked_inxs:
         if rowcolbox == "row":
             row = group_no
@@ -128,6 +131,6 @@ def naked_remove(rowcolbox,group_no,naked_inxs,comb,cands,square_pos,no_of_naked
             # Use df.at[] instead
             cands.at[row, col] = np.array(list(set(cands.iloc[row, col]).difference(set(comb))))
             print(f"R{row:<1}C{col:<1}     Naked {pairtriplequad[no_of_nakeds]:>7}s ({rowcolbox:<3}), {str(removed_vals):<15} removed, {pairtriplequad[no_of_nakeds]:>7}s: {str(comb):>6}")
-            ischanged = 1
+            ischanged = True
             
     return cands,ischanged     

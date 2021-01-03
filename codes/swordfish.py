@@ -18,13 +18,13 @@ import itertools
 
 #%% SWORDFISH  
 def swordfish(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     #check swordfish for both rows and columns
     for rowcol in ["rows","cols"]:
         # print(rowcol)
         if rowcol == "cols":
             cands = cands.T
-        ischanged = 0
+        ischanged = False
         
         #construct candidate table
         wings = []
@@ -70,12 +70,14 @@ def swordfish(board,cands,square_pos):
                                 # cands.set_value(rows,cols,np.delete(cands.iloc[rows,cols],np.where(cands.iloc[rows,cols]==rem)))# set_value is deprecated as of pd 0.21.0
                                 # Use df.at[] instead
                                 cands.at[rows, cols] = np.delete(cands.iloc[rows,cols],np.where(cands.iloc[rows,cols]==rem))
-                                ischanged = 1
+                                ischanged = True
                                 print(f"R{rows}C{cols}     Swordfish, {rem} removed from {rowcol}")
                     if ischanged:
-                        solver.solver(board,cands,square_pos) 
+                        # solver.solver(board,cands,square_pos)
+                        return board, cands, square_pos, ischanged
                     
-    cands = cands.T
-    return cands
+    # cands = cands.T
+    # return cands
+    return board, cands, square_pos, ischanged
 
 # cands = swordfish(board,cands,square_pos)

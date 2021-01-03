@@ -13,7 +13,7 @@ import solver as solver
 #%% BOX/LINE REDUCTION
 
 def box_line(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     
     #check row by row
     for rows in range(9):
@@ -41,7 +41,7 @@ def box_line(board,cands,square_pos):
                                 temp.remove(val)
                                 # cands.iloc[ix] = np.array(temp)
                                 cands.set_value(ix[0],ix[1],np.array(temp))
-                                ischanged = 1
+                                ischanged = True
                                 print(f"R{ix[0]}C{ix[1]}     Box/Line (row) reduction value {val} removed")
                                 # solver.solver(board,cands,square_pos)
                             except:
@@ -73,12 +73,14 @@ def box_line(board,cands,square_pos):
                                     temp.remove(val)
                                     # cands.iloc[ix] = np.array(temp)
                                     cands.set_value(ix[0],ix[1],np.array(temp))
-                                    ischanged = 1
+                                    ischanged = True
                                     print(f"R{ix[0]}C{ix[1]}     Box/Line (col) reduction value {val} removed")
                                     # solver.solver(board,cands,square_pos)
                                 except:
                                     pass
         
         
-    if ischanged:
-        solver.solver(board,cands,square_pos) 
+    # if ischanged:
+    #     solver.solver(board,cands,square_pos)
+
+    return board, cands, square_pos, ischanged

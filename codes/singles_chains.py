@@ -126,7 +126,7 @@ def simple_colouring(val,search,strlinx_rows,strlinx_cols,strlinx_boxs,sl_uniq,m
     return match_matrix
     
 def singles_chains_eliminate(sl_uniq,match_matrix,rem,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     for rows in cands.index:
         for cols in cands.columns:
             use = cands.iloc[rows,cols]
@@ -166,7 +166,7 @@ def singles_chains_eliminate(sl_uniq,match_matrix,rem,cands,square_pos):
                                         # cands.iloc[rows,cols] = np.array(temp)
                                         cands.set_value(rows,cols,np.array(temp))
                                         print(f"R{rows}C{cols}     Singles-Chains, removed {rem+1}")
-                                        ischanged = 1
+                                        ischanged = True
                                     except:
                                         pass 
                         elif len(inter_colours) >= 3:
@@ -180,7 +180,7 @@ def singles_chains_eliminate(sl_uniq,match_matrix,rem,cands,square_pos):
                                         # cands.iloc[rows,cols] = np.array(temp)
                                         cands.set_value(rows,cols,np.array(temp))
                                         print(f"R{rows}C{cols}     Singles-Chains, removed {rem+1}")
-                                        ischanged = 1
+                                        ischanged = True
                                     except:
                                         pass 
                             
@@ -188,7 +188,7 @@ def singles_chains_eliminate(sl_uniq,match_matrix,rem,cands,square_pos):
 
 #call single chain functions
 def singles_chains(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
 
     #select the value before finding conjugate pairs
     for val in range(9):
@@ -221,7 +221,10 @@ def singles_chains(board,cands,square_pos):
         #call single chains elimination function
         ischanged,cands = singles_chains_eliminate(sl_uniq,match_matrix,val,cands,square_pos)
         if ischanged:
-            solver.solver(board,cands,square_pos) 
+            # solver.solver(board,cands,square_pos)
+            return board, cands, square_pos, ischanged
+    return board, cands, square_pos, ischanged      # FW: Might need to be run indented here?
+
      
 #colours for the simple colouring strategy
 colours = pd.Series(["B","R"]) 

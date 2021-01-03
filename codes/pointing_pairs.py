@@ -13,7 +13,7 @@ import solver as solver
 #%% POINTING PAIRS
 def pointing_pairs(board,cands,square_pos):
     # print("Pointing Pairs")
-    ischanged = 0
+    ischanged = False
     
     for i in [[0,1,2],[3,4,5],[6,7,8]]:
         for j in [[0,1,2],[3,4,5],[6,7,8]]:
@@ -50,7 +50,7 @@ def pointing_pairs(board,cands,square_pos):
                                 # cands.iloc[rows,pointcols[0]] = np.array(temp)
                                 cands.set_value(rows,pointcols[0],np.array(temp))
                                 print(f"R{rows}C{pointcols[0]}     Pointing Pairs (cols), {pair_val} removed")
-                                ischanged = 1
+                                ischanged = True
                                 # solver.solver(board,cands,square_pos)
                             except:
                                 pass
@@ -68,12 +68,14 @@ def pointing_pairs(board,cands,square_pos):
                                 # cands.iloc[pointrows[0],cols] = np.array(temp)
                                 cands.set_value(pointrows[0],cols,np.array(temp))
                                 print(f"R{pointrows[0]}C{cols}     Pointing Pairs (rows), {pair_val} removed")
-                                ischanged = 1
+                                ischanged = True
                                 # solver.solver(board,cands,square_pos)
                             except:
                                 pass
                 except:
                     pass
                     
-    if ischanged:
-        solver.solver(board,cands,square_pos)   
+    # if ischanged:
+    #     solver.solver(board,cands,square_pos)
+
+    return board, cands, square_pos, ischanged

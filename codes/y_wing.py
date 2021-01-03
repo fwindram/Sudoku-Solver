@@ -58,7 +58,7 @@ def find_key(comb,square_pos):
 def y_wing_cand_eliminate(key,comb,cands,rem,isrect,square_pos,board):
     comb = list(comb)
     comb.remove(key)
-    ischanged = 0
+    ischanged = False
     
     if isrect:
         for inx in [(comb[0][0],comb[1][1]),(comb[1][0],comb[0][1])]:
@@ -68,7 +68,7 @@ def y_wing_cand_eliminate(key,comb,cands,rem,isrect,square_pos,board):
                     temp.remove(rem)
                     cands.iloc[inx] = np.array(temp)
                     print(f"R{inx[0]}C{inx[1]}     Y-Wing, removed {rem}")
-                    ischanged = 1
+                    ischanged = True
                 except:
                     pass 
     else:
@@ -89,13 +89,13 @@ def y_wing_cand_eliminate(key,comb,cands,rem,isrect,square_pos,board):
                         temp.remove(rem)
                         cands.iloc[inx] = np.array(temp)
                         print(f"R{inx[0]}C{inx[1]}     Y-Wing, removed {rem}")
-                        ischanged = 1
+                        ischanged = True
                     except:
                         pass  
     return ischanged
 
 def y_wing(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     #determine the number of candidates for each cell (if else statement is necessary otherwise str.len() gives error when all column or row values are Nan)
     lenx = cands.apply(lambda x: x.str.len() if not x.isnull().all() else x)
     #find the location of bivalue cells
@@ -144,5 +144,7 @@ def y_wing(board,cands,square_pos):
                                 
                                 #remove value from wing boxes
                                 ischanged = y_wing_cand_eliminate(key,comb,cands,rem,0,square_pos,board)
-    if ischanged:
-        solver.solver(board,cands,square_pos)           
+    # if ischanged:
+    #     solver.solver(board,cands,square_pos)
+
+    return board, cands, square_pos, ischanged

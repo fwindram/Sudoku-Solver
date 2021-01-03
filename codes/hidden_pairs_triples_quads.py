@@ -15,7 +15,7 @@ import itertools
 #%% HIDDEN PAIRS-TRIPLES
 #find hidden pairs-triples-quads in the candidates dataframe
 def hidden_pairs_triples(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     
     #go through combinations (2 and 3 elements at a time)
     for pair_triple_quad in [2,3]:
@@ -48,12 +48,13 @@ def hidden_pairs_triples(board,cands,square_pos):
                         cands,ischanged = hidden_remove(rowcolbox,group_no,hidden_inxs,comb,cands,square_pos,no_of_hidden)
 
                         if ischanged:
-                            solver.solver(board,cands,square_pos) 
+                            return board, cands, square_pos, ischanged
+    return board, cands, square_pos, ischanged
                   
 #%% HIDDEN QUADS
 #find hidden quads in the candidates dataframe
 def hidden_quads(board,cands,square_pos):
-    ischanged = 0
+    ischanged = False
     
     #go through combinations (4 elements at a time)
     pair_triple_quad = 4
@@ -86,13 +87,15 @@ def hidden_quads(board,cands,square_pos):
                     cands,ischanged = hidden_remove(rowcolbox,group_no,hidden_inxs,comb,cands,square_pos,no_of_hidden)
 
                     if ischanged:
-                        solver.solver(board,cands,square_pos) 
+                        return board, cands, square_pos, ischanged
+    return board, cands, square_pos, ischanged
+
 
 #removes values except hidden pairs, triples or quads from a group (row col or box)
 #it is different than "naked_remove" function 
 def hidden_remove(rowcolbox,group_no,hidden_inxs,comb,cands,square_pos,no_of_hidden):
     pairtriplequad = {2:"Pair",3:"Triple",4:"Quad"}
-    ischanged = 0
+    ischanged = False
     for cells in hidden_inxs:
         if rowcolbox == "row":
             row = group_no
@@ -112,6 +115,6 @@ def hidden_remove(rowcolbox,group_no,hidden_inxs,comb,cands,square_pos,no_of_hid
         if len(removed_vals):
             cands.iloc[row,col] = np.array(list(set(comb)&set(cands.iloc[row,col])))
             print(f"R{row:<1}C{col:<1}     Hidden {pairtriplequad[no_of_hidden]:>7}s ({rowcolbox:<3}), {str(removed_vals):<15} removed, {pairtriplequad[no_of_hidden]:>7}s: {str(comb):>6}")
-            ischanged = 1
+            ischanged = True
             
-    return cands,ischanged
+    return cands, ischanged

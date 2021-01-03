@@ -16,7 +16,7 @@ def x_wing(board,cands,square_pos):
     for rowcol in ["rows","cols"]:
         if rowcol == "cols":
             cands = cands.T
-        ischanged = 0
+        ischanged = False
         #construct candidate table
         wings = []
         for i in range(1,10):
@@ -47,11 +47,13 @@ def x_wing(board,cands,square_pos):
                                         try:
                                             temp.remove(wing+1)
                                             print(f"R{ix}C{rem}     X-Wing, removed {wing+1} from {rowcol}")
-                                            ischanged = 1
+                                            ischanged = True
                                         except:
                                             pass
                                         use[ix] = np.array(temp)
                                 cands[rem] = use
-    cands = cands.T
-    if ischanged:
-        solver.solver(board,cands,square_pos) 
+    cands = cands.T     # FW: Is this right?
+    # if ischanged:
+    #     solver.solver(board,cands,square_pos)
+
+    return board, cands, square_pos, ischanged

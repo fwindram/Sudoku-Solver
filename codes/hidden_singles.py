@@ -11,7 +11,7 @@ import solver as solver
 
 #%% HIDDEN SINGLES
 def hidden_singles(board,cands,square_pos):
-    is_changed = 0
+    ischanged = False
     #check rows
     for row in range(9):
         temp = []
@@ -23,7 +23,7 @@ def hidden_singles(board,cands,square_pos):
             temp1 = cands.loc[row].dropna().apply(lambda x: valun in x)
             inx = temp1.index[temp1 == True]
             if len(inx):
-                is_changed = 1
+                ischanged = True
                 for inxt in inx:
                     print(f"R{row+1}C{inxt+1}={valun} : Hidden Singles (row)")
                     board.iloc[row,inxt] = valun
@@ -40,7 +40,7 @@ def hidden_singles(board,cands,square_pos):
             temp1 = cands.iloc[:,col].dropna().apply(lambda x: valun in x)
             inx = temp1.index[temp1 == True]
             if len(inx):
-                is_changed = 1
+                ischanged = True
                 for inxt in inx:
                     print(f"R{inxt+1}C{col+1}={valun} : Hidden Singles (col)")
                     board.iloc[inxt,col] = valun
@@ -67,8 +67,9 @@ def hidden_singles(board,cands,square_pos):
                                         print(f"R{rowx+1}C{colx+1}={to_change} : Hidden Singles (square)")
                                         board.iloc[rowx,colx] = to_change
                                         cands = candidates_update(cands,rowx,colx,to_change,square_pos)
-                                        is_changed = 1
+                                        ischanged = True
                             except:
                                 print("except")
-    if is_changed:
-        solver.solver(board,cands,square_pos)                       
+    return board, cands, square_pos, ischanged
+    # if ischanged:
+    #     solver.solver(board,cands,square_pos)
